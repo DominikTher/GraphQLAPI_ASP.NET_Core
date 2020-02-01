@@ -1,7 +1,3 @@
-# GraphQLAPI_ASP.NET_Core
-
-
-
 # Building GraphQL APIs with ASP.NET Core
 
 My notes: 
