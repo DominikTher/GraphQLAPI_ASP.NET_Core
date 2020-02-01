@@ -1,0 +1,33 @@
+﻿using Hotel.DataAccess;
+using Hotel.DataAccess.Entities;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Hotel.Repositories
+{
+    public class HotelRepository
+    {
+        private readonly HotelContext hotelContext;
+        private readonly Func<HotelContext> hotelContextFactory;
+
+        public HotelRepository(HotelContext hotelContext)
+        {
+            this.hotelContext = hotelContext;
+        }
+
+        public HotelRepository(Func<HotelContext> hotelContextFactory)
+        {
+            this.hotelContextFactory = hotelContextFactory;
+        }
+
+        public async Task<IEnumerable<HotelEntity>> GetAllAsync()
+        {
+            using var dbContext = hotelContextFactory.Invoke();
+
+            return await dbContext.Hotels.ToListAsync();
+        }
+    }
+}
