@@ -10,13 +10,7 @@ namespace Hotel.Repositories
 {
     public class HotelReviewRepository
     {
-        private readonly HotelContext hotelContext;
         private readonly Func<HotelContext> hotelContextFactory;
-
-        public HotelReviewRepository(HotelContext hotelContext)
-        {
-            this.hotelContext = hotelContext;
-        }
 
         public HotelReviewRepository(Func<HotelContext> hotelContextFactory)
         {
@@ -28,6 +22,14 @@ namespace Hotel.Repositories
             using var dbContext = hotelContextFactory.Invoke();
 
             return await dbContext.HotelReviews.Where(entity => entity.HotelId == hotelId).ToListAsync();
+        }
+
+        public async Task<ILookup<int, HotelReview>> GetForHotels(IEnumerable<int> hotelIds)
+        {
+            using var dbContext = hotelContextFactory.Invoke();
+            var reviews = await dbContext.HotelReviews.Where(hotelReview => hotelIds.Contains(hotelReview.HotelId)).ToListAsync();
+
+            return reviews.ToLookup(r => r.HotelId);
         }
     }
 }

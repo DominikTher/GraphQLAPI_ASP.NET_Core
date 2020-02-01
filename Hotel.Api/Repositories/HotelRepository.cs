@@ -1,4 +1,5 @@
-﻿using Hotel.DataAccess;
+﻿using Hotel.Api.DataAccess.Entities;
+using Hotel.DataAccess;
 using Hotel.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,17 +11,18 @@ namespace Hotel.Repositories
 {
     public class HotelRepository
     {
-        private readonly HotelContext hotelContext;
         private readonly Func<HotelContext> hotelContextFactory;
-
-        public HotelRepository(HotelContext hotelContext)
-        {
-            this.hotelContext = hotelContext;
-        }
 
         public HotelRepository(Func<HotelContext> hotelContextFactory)
         {
             this.hotelContextFactory = hotelContextFactory;
+        }
+
+        public async Task<HotelEntity> GetOneAsync(int id)
+        {
+            using var dbContext = hotelContextFactory.Invoke();
+
+            return await dbContext.Hotels.FirstOrDefaultAsync(entity => entity.Id == id);
         }
 
         public async Task<IEnumerable<HotelEntity>> GetAllAsync()

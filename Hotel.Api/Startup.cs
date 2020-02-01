@@ -28,32 +28,34 @@ namespace Hotel
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddScoped<HotelRepository>();
-            //services.AddScoped<HotelReviewRepository>();
-
             services.AddScoped(service => new HotelRepository(service.GetRequiredService<HotelContext>));
             services.AddScoped(service => new HotelReviewRepository(service.GetRequiredService<HotelContext>));
 
             var connectionString = Configuration["ConnectionStrings:HotelDBConnectionString"];
-            services.AddDbContext<HotelContext>(options => options.UseSqlServer(connectionString), ServiceLifetime.Transient);
+            services.AddDbContext<HotelContext>(options => options
+                                                                .UseSqlServer(connectionString)
+                                                                .EnableSensitiveDataLogging(true), ServiceLifetime.Transient);
 
             services.AddScoped<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
             services
                 .AddGraphQL(options => { options.ExposeExceptions = Env.IsDevelopment(); })
-                .AddGraphTypes(ServiceLifetime.Scoped);
+                .AddGraphTypes(ServiceLifetime.Scoped)
+                .AddUserContextBuilder(httpContext => httpContext.User)
+                .AddDataLoader();
+
             services.AddScoped<HotelSchema>();
 
             services
                 .AddControllers()
                 .AddNewtonsoftJson();
 
-            // kestrel
+            // kestrel workaround
             services.Configure<KestrelServerOptions>(options =>
             {
                 options.AllowSynchronousIO = true;
             });
 
-            // IIS
+            // IIS workaround
             services.Configure<IISServerOptions>(options =>
             {
                 options.AllowSynchronousIO = true;

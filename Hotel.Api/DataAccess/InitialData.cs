@@ -1,4 +1,5 @@
-﻿using Hotel.DataAccess.Entities;
+﻿using Hotel.Api.DataAccess.Entities;
+using Hotel.DataAccess.Entities;
 using System.Linq;
 
 namespace Hotel.DataAccess
@@ -9,7 +10,7 @@ namespace Hotel.DataAccess
         {
             if (!hotelContext.Hotels.Any())
             {
-                hotelContext.Hotels.Add(new HotelEntity
+                hotelContext.Hotels.Add(new FancyHotel
                 {
                     Name = "Aloha",
                     Description = "Hotel in Africa",
@@ -18,7 +19,7 @@ namespace Hotel.DataAccess
                     HotelType = HotelType.OneStar
                 });
 
-                hotelContext.Hotels.Add(new HotelEntity
+                hotelContext.Hotels.Add(new FancyHotel
                 {
                     Name = "General",
                     Description = "Hotel in USA",
@@ -27,7 +28,7 @@ namespace Hotel.DataAccess
                     HotelType = HotelType.OneStar
                 });
 
-                hotelContext.Hotels.Add(new HotelEntity
+                hotelContext.Hotels.Add(new FancyHotel
                 {
                     Name = "Ultimate",
                     Description = "Hotel in Europe",
@@ -36,7 +37,7 @@ namespace Hotel.DataAccess
                     HotelType = HotelType.TwoStar
                 });
 
-                hotelContext.Hotels.Add(new HotelEntity
+                hotelContext.Hotels.Add(new FancyHotel
                 {
                     Name = "Beds",
                     Description = "Hotel in Brno",
@@ -45,7 +46,7 @@ namespace Hotel.DataAccess
                     HotelType = HotelType.TwoStar
                 });
 
-                hotelContext.Hotels.Add(new HotelEntity
+                hotelContext.Hotels.Add(new FancyHotel
                 {
                     Name = "International",
                     Description = "Hotel in Slovakia",
