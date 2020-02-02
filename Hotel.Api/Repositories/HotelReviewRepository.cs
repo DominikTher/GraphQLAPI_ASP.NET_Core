@@ -17,19 +17,28 @@ namespace Hotel.Repositories
             this.hotelContextFactory = hotelContextFactory;
         }
 
-        public async Task<IEnumerable<HotelReview>> GetForHotel(int hotelId)
+        public async Task<IEnumerable<HotelReview>> GetForHotelAsync(int hotelId)
         {
             using var dbContext = hotelContextFactory.Invoke();
 
             return await dbContext.HotelReviews.Where(entity => entity.HotelId == hotelId).ToListAsync();
         }
 
-        public async Task<ILookup<int, HotelReview>> GetForHotels(IEnumerable<int> hotelIds)
+        public async Task<ILookup<int, HotelReview>> GetForHotelsAsync(IEnumerable<int> hotelIds)
         {
             using var dbContext = hotelContextFactory.Invoke();
             var reviews = await dbContext.HotelReviews.Where(hotelReview => hotelIds.Contains(hotelReview.HotelId)).ToListAsync();
 
             return reviews.ToLookup(r => r.HotelId);
+        }
+
+        public async Task<HotelReview> AddAsync(HotelReview hotelReview)
+        {
+            using var dbContext = hotelContextFactory.Invoke();
+            var addedEntity = dbContext.HotelReviews.Add(hotelReview);
+            await dbContext.SaveChangesAsync();
+
+            return addedEntity.Entity;
         }
     }
 }

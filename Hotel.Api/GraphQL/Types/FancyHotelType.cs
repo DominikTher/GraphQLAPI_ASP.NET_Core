@@ -27,7 +27,7 @@ namespace Hotel.Api.GraphQL.Types
                             // TODO
                             var user = context.UserContext as ClaimsPrincipal;
 
-                    var loader = dataLoaderContextAccessor.Context.GetOrAddCollectionBatchLoader<int, HotelReview>("GetReviewsByHotelId", hotelReviewRepository.GetForHotels);
+                    var loader = dataLoaderContextAccessor.Context.GetOrAddCollectionBatchLoader<int, HotelReview>("GetReviewsByHotelId", hotelReviewRepository.GetForHotelsAsync);
 
                     return loader.LoadAsync(context.Source.Id);
                 });

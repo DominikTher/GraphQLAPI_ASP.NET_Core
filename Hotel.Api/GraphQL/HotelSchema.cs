@@ -1,5 +1,6 @@
 ﻿using GraphQL;
 using GraphQL.Types;
+using Hotel.Api.GraphQL;
 
 namespace Hotel.GraphQL
 {
@@ -9,6 +10,7 @@ namespace Hotel.GraphQL
             : base(dependencyResolver)
         {
             Query = dependencyResolver.Resolve<HotelQuery>();
+            Mutation = dependencyResolver.Resolve<HotelMutation>();
         }
     }
 }
